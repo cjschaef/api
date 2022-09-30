@@ -853,6 +853,15 @@ type IBMCloudPlatformStatus struct {
 	// ResourceGroupName is the Resource Group for new IBMCloud resources created for the cluster.
 	ResourceGroupName string `json:"resourceGroupName,omitempty"`
 
+	// NetworkResourceGroupName is the Resource Group for network resources like the VPC and Subnets used by the cluster,
+	// where ResourceGroupName will contain the remaining resources (e.g., VSI's).
+	// If empty, the NetworkResourceGroupName is considered to be the same value as ResourceGroupName, which will contain
+	// the network and remaining resources of the cluster.
+	// This field is immutable and cannot be changed after cluster installation.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="NetworkResourceGroupName is immutable"
+	// +optional
+	NetworkResourceGroupName string `json:"networkResourceGroupName,omitempty"`
+
 	// ProviderType indicates the type of cluster that was created
 	ProviderType IBMCloudProviderType `json:"providerType,omitempty"`
 

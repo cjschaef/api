@@ -570,6 +570,12 @@ spec:
                         location:
                           description: Location is where the cluster has been deployed
                           type: string
+                        networkResourceGroupName:
+                          description: NetworkResourceGroupName is the Resource Group for network resources like the VPC and Subnets used by the cluster, where ResourceGroupName will contain the remaining resources (e.g., VSI's). If empty, the NetworkResourceGroupName is considered to be the same value as ResourceGroupName, which will contain the network and remaining resources of the cluster. This field is immutable and cannot be changed after cluster installation.
+                          type: string
+                          x-kubernetes-validations:
+                            - message: NetworkResourceGroupName is immutable
+                              rule: self == oldSelf
                         providerType:
                           description: ProviderType indicates the type of cluster that was created
                           type: string
