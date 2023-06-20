@@ -1247,7 +1247,8 @@ func (GCPPlatformStatus) SwaggerDoc() map[string]string {
 }
 
 var map_IBMCloudPlatformSpec = map[string]string{
-	"": "IBMCloudPlatformSpec holds the desired state of the IBMCloud infrastructure provider. This only includes fields that can be modified in the cluster.",
+	"":                 "IBMCloudPlatformSpec holds the desired state of the IBMCloud infrastructure provider. This only includes fields that can be modified in the cluster.",
+	"serviceEndpoints": "ServiceEndpoints is a list of custom endpoints which will override the default service endpoints of an IBM Cloud service.",
 }
 
 func (IBMCloudPlatformSpec) SwaggerDoc() map[string]string {
@@ -1261,10 +1262,21 @@ var map_IBMCloudPlatformStatus = map[string]string{
 	"providerType":      "ProviderType indicates the type of cluster that was created",
 	"cisInstanceCRN":    "CISInstanceCRN is the CRN of the Cloud Internet Services instance managing the DNS zone for the cluster's base domain",
 	"dnsInstanceCRN":    "DNSInstanceCRN is the CRN of the DNS Services instance managing the DNS zone for the cluster's base domain",
+	"serviceEndpoints":  "ServiceEndpoints is a list of custom endpoints which will override the default service endpoints of an IBM Cloud service.",
 }
 
 func (IBMCloudPlatformStatus) SwaggerDoc() map[string]string {
 	return map_IBMCloudPlatformStatus
+}
+
+var map_IBMCloudServiceEndpoint = map[string]string{
+	"":     "IBMCloudServiceEndpoint stores the configuration of a custom url to override existing defaults of IBM Cloud Services.",
+	"name": "Name is the name of the IBM Cloud service. examples of these services are:\n  IAM=https://cloud.ibm.com/apidocs/iam-identity-token-api\n  ResourceController=https://cloud.ibm.com/apidocs/resource-controller/resource-controller",
+	"url":  "URL is fully qualified URI with scheme https, that overrides the default generated endpoint for a client. This must be provided and cannot be empty.",
+}
+
+func (IBMCloudServiceEndpoint) SwaggerDoc() map[string]string {
+	return map_IBMCloudServiceEndpoint
 }
 
 var map_Infrastructure = map[string]string{
