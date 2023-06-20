@@ -92,6 +92,29 @@ spec:
                       type: object
                     ibmcloud:
                       description: IBMCloud contains settings specific to the IBMCloud infrastructure provider.
+                      properties:
+                        serviceEndpoints:
+                          description: ServiceEndpoints is a list of custom endpoints which will override the default service endpoints of an IBM Cloud service.
+                          items:
+                            description: IBMCloudServiceEndpoint stores the configuration of a custom url to override existing defaults of IBM Cloud Services.
+                            properties:
+                              name:
+                                description: 'Name is the name of the IBM Cloud service. examples of these services are: IAM=https://cloud.ibm.com/apidocs/iam-identity-token-api ResourceController=https://cloud.ibm.com/apidocs/resource-controller/resource-controller'
+                                pattern: ^[a-z0-9-]+$
+                                type: string
+                              url:
+                                description: URL is fully qualified URI with scheme https, that overrides the default generated endpoint for a client. This must be provided and cannot be empty.
+                                format: uri
+                                pattern: ^https://
+                                type: string
+                            required:
+                              - name
+                              - url
+                            type: object
+                          type: array
+                          x-kubernetes-list-map-keys:
+                            - name
+                          x-kubernetes-list-type: map
                       type: object
                     kubevirt:
                       description: Kubevirt contains settings specific to the kubevirt infrastructure provider.
@@ -662,6 +685,28 @@ spec:
                         resourceGroupName:
                           description: ResourceGroupName is the Resource Group for new IBMCloud resources created for the cluster.
                           type: string
+                        serviceEndpoints:
+                          description: ServiceEndpoints is a list of custom endpoints which will override the default service endpoints of an IBM Cloud service.
+                          items:
+                            description: IBMCloudServiceEndpoint stores the configuration of a custom url to override existing defaults of IBM Cloud Services.
+                            properties:
+                              name:
+                                description: 'Name is the name of the IBM Cloud service. examples of these services are: IAM=https://cloud.ibm.com/apidocs/iam-identity-token-api ResourceController=https://cloud.ibm.com/apidocs/resource-controller/resource-controller'
+                                pattern: ^[a-z0-9-]+$
+                                type: string
+                              url:
+                                description: URL is fully qualified URI with scheme https, that overrides the default generated endpoint for a client. This must be provided and cannot be empty.
+                                format: uri
+                                pattern: ^https://
+                                type: string
+                            required:
+                              - name
+                              - url
+                            type: object
+                          type: array
+                          x-kubernetes-list-map-keys:
+                            - name
+                          x-kubernetes-list-type: map
                       type: object
                     kubevirt:
                       description: Kubevirt contains settings specific to the kubevirt infrastructure provider.

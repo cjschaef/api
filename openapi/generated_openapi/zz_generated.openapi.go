@@ -248,6 +248,7 @@ func GetOpenAPIDefinitions(ref common.ReferenceCallback) map[string]common.OpenA
 		"github.com/openshift/api/config/v1.HubSourceStatus":                                          schema_openshift_api_config_v1_HubSourceStatus(ref),
 		"github.com/openshift/api/config/v1.IBMCloudPlatformSpec":                                     schema_openshift_api_config_v1_IBMCloudPlatformSpec(ref),
 		"github.com/openshift/api/config/v1.IBMCloudPlatformStatus":                                   schema_openshift_api_config_v1_IBMCloudPlatformStatus(ref),
+		"github.com/openshift/api/config/v1.IBMCloudServiceEndpoint":                                  schema_openshift_api_config_v1_IBMCloudServiceEndpoint(ref),
 		"github.com/openshift/api/config/v1.IdentityProvider":                                         schema_openshift_api_config_v1_IdentityProvider(ref),
 		"github.com/openshift/api/config/v1.IdentityProviderConfig":                                   schema_openshift_api_config_v1_IdentityProviderConfig(ref),
 		"github.com/openshift/api/config/v1.Image":                                                    schema_openshift_api_config_v1_Image(ref),
@@ -12361,8 +12362,34 @@ func schema_openshift_api_config_v1_IBMCloudPlatformSpec(ref common.ReferenceCal
 			SchemaProps: spec.SchemaProps{
 				Description: "IBMCloudPlatformSpec holds the desired state of the IBMCloud infrastructure provider. This only includes fields that can be modified in the cluster.",
 				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"serviceEndpoints": {
+						VendorExtensible: spec.VendorExtensible{
+							Extensions: spec.Extensions{
+								"x-kubernetes-list-map-keys": []interface{}{
+									"name",
+								},
+								"x-kubernetes-list-type": "map",
+							},
+						},
+						SchemaProps: spec.SchemaProps{
+							Description: "ServiceEndpoints is a list of custom endpoints which will override the default service endpoints of an IBM Cloud service.",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Default: map[string]interface{}{},
+										Ref:     ref("github.com/openshift/api/config/v1.IBMCloudServiceEndpoint"),
+									},
+								},
+							},
+						},
+					},
+				},
 			},
 		},
+		Dependencies: []string{
+			"github.com/openshift/api/config/v1.IBMCloudServiceEndpoint"},
 	}
 }
 
@@ -12408,7 +12435,61 @@ func schema_openshift_api_config_v1_IBMCloudPlatformStatus(ref common.ReferenceC
 							Format:      "",
 						},
 					},
+					"serviceEndpoints": {
+						VendorExtensible: spec.VendorExtensible{
+							Extensions: spec.Extensions{
+								"x-kubernetes-list-map-keys": []interface{}{
+									"name",
+								},
+								"x-kubernetes-list-type": "map",
+							},
+						},
+						SchemaProps: spec.SchemaProps{
+							Description: "ServiceEndpoints is a list of custom endpoints which will override the default service endpoints of an IBM Cloud service.",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Default: map[string]interface{}{},
+										Ref:     ref("github.com/openshift/api/config/v1.IBMCloudServiceEndpoint"),
+									},
+								},
+							},
+						},
+					},
 				},
+			},
+		},
+		Dependencies: []string{
+			"github.com/openshift/api/config/v1.IBMCloudServiceEndpoint"},
+	}
+}
+
+func schema_openshift_api_config_v1_IBMCloudServiceEndpoint(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "IBMCloudServiceEndpoint stores the configuration of a custom url to override existing defaults of IBM Cloud Services.",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"name": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Name is the name of the IBM Cloud service. examples of these services are:\n  IAM=https://cloud.ibm.com/apidocs/iam-identity-token-api\n  ResourceController=https://cloud.ibm.com/apidocs/resource-controller/resource-controller",
+							Default:     "",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"url": {
+						SchemaProps: spec.SchemaProps{
+							Description: "URL is fully qualified URI with scheme https, that overrides the default generated endpoint for a client. This must be provided and cannot be empty.",
+							Default:     "",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+				},
+				Required: []string{"name", "url"},
 			},
 		},
 	}

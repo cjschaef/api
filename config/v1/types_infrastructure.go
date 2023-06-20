@@ -1082,9 +1082,39 @@ type VSpherePlatformStatus struct {
 	LoadBalancer *VSpherePlatformLoadBalancer `json:"loadBalancer,omitempty"`
 }
 
+// IBMCloudServiceEndpoint stores the configuration of a custom url to
+// override existing defaults of IBM Cloud Services.
+type IBMCloudServiceEndpoint struct {
+	// Name is the name of the IBM Cloud service.
+	// examples of these services are:
+	//   IAM=https://cloud.ibm.com/apidocs/iam-identity-token-api
+	//   ResourceController=https://cloud.ibm.com/apidocs/resource-controller/resource-controller
+	//
+	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Pattern=`^[a-z0-9-]+$`
+	Name string `json:"name"`
+
+	// URL is fully qualified URI with scheme https, that overrides the default generated
+	// endpoint for a client.
+	// This must be provided and cannot be empty.
+	//
+	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Type=string
+	// +kubebuilder:validation:Format=uri
+	// +kubebuilder:validation:Pattern=`^https://`
+	URL string `json:"url"`
+}
+
 // IBMCloudPlatformSpec holds the desired state of the IBMCloud infrastructure provider.
 // This only includes fields that can be modified in the cluster.
-type IBMCloudPlatformSpec struct{}
+type IBMCloudPlatformSpec struct{
+	// ServiceEndpoints is a list of custom endpoints which will override the default
+	// service endpoints of an IBM Cloud service.
+	// +listType=map
+	// +listMapKey=name
+	// +optional
+	ServiceEndpoints []IBMCloudServiceEndpoint `json:"serviceEndpoints,omitempty"`
+}
 
 // IBMCloudPlatformStatus holds the current status of the IBMCloud infrastructure provider.
 type IBMCloudPlatformStatus struct {
@@ -1104,6 +1134,13 @@ type IBMCloudPlatformStatus struct {
 	// DNSInstanceCRN is the CRN of the DNS Services instance managing the DNS zone
 	// for the cluster's base domain
 	DNSInstanceCRN string `json:"dnsInstanceCRN,omitempty"`
+
+        // ServiceEndpoints is a list of custom endpoints which will override the default
+        // service endpoints of an IBM Cloud service.
+        // +listType=map
+        // +listMapKey=name
+        // +optional
+        ServiceEndpoints []IBMCloudServiceEndpoint `json:"serviceEndpoints,omitempty"`
 }
 
 // KubevirtPlatformSpec holds the desired state of the kubevirt infrastructure provider.
