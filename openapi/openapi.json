@@ -24309,6 +24309,10 @@
           "description": "gcp is used to configure the GCP CSI driver.",
           "$ref": "#/definitions/com.github.openshift.api.operator.v1.GCPCSIDriverConfigSpec"
         },
+        "ibmcloud": {
+          "description": "ibmcloud is used to configure the IBM Cloud CSI driver.",
+          "$ref": "#/definitions/com.github.openshift.api.operator.v1.IBMCloudCSIDriverConfigSpec"
+        },
         "vSphere": {
           "description": "vsphere is used to configure the vsphere CSI driver.",
           "$ref": "#/definitions/com.github.openshift.api.operator.v1.VSphereCSIDriverConfigSpec"
@@ -24321,6 +24325,7 @@
             "aws": "AWS",
             "azure": "Azure",
             "gcp": "GCP",
+            "ibmcloud": "IBMCloud",
             "vSphere": "VSphere"
           }
         }
@@ -26085,6 +26090,10 @@
           "format": "int64"
         }
       }
+    },
+    "com.github.openshift.api.operator.v1.IBMCloudCSIDriverConfigSpec": {
+      "description": "IBMCloudCSIDriverConfigSpec defines the properties that can be configured for the IBM Cloud CSI driver.",
+      "type": "object"
     },
     "com.github.openshift.api.operator.v1.IBMLoadBalancerParameters": {
       "description": "IBMLoadBalancerParameters provides configuration settings that are specific to IBM Cloud load balancers.",

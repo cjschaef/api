@@ -143,6 +143,10 @@ type CSIDriverConfigSpec struct {
 	// +optional
 	GCP *GCPCSIDriverConfigSpec `json:"gcp,omitempty"`
 
+	// ibmcloud is used to configure the IBM Cloud CSI driver.
+	// +optional
+	IBMCloud *IBMCloudCSIDriverConfigSpec `json:"ibmcloud,omitempty"`
+
 	// vsphere is used to configure the vsphere CSI driver.
 	// +optional
 	VSphere *VSphereCSIDriverConfigSpec `json:"vSphere,omitempty"`
@@ -246,6 +250,15 @@ type GCPCSIDriverConfigSpec struct {
 	// encryption keys, rather than the default keys managed by GCP.
 	// +optional
 	KMSKey *GCPKMSKeyReference `json:"kmsKey,omitempty"`
+}
+
+// IBMCloudCSIDriverConfigSpec defines the properties that can be configured for the IBM Cloud CSI driver.
+type IBMCloudCSIDriverConfigSpec struct {
+	// encryptionKeyCRN is the IBM Cloud CRN of the customer-managed root key to use
+	// for disk encryption of volumes for the default storage class(es).
+	// kubebuilder:validation:Pattern:=`^crn:v[0-9]+:bluemix:(public|private):(kms|hs-crypto):[a-z-]+:a/[0-9a-f]+:[0-9a-f-]{36}:key:[0-9a-f-]{36}$`
+	// +optional
+	// EncryptionKeyCRN string `json:encryptionKeyCRN,omitempty"`
 }
 
 // VSphereCSIDriverConfigSpec defines properties that
